@@ -38,7 +38,7 @@
    <center>
       <Pane BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="56.0" layoutY="19.0" mnemonicParsing="false" prefHeight="92.0" prefWidth="133.0" text="Manage Lecturers" />
+            <Button fx:id="manageLecturersButton" layoutX="56.0" layoutY="19.0" mnemonicParsing="false" onAction="#loadManageLecturersScene" prefHeight="92.0" prefWidth="133.0" text="Manage Lecturers" />
             <Button fx:id="manageStudentsButton" layoutX="268.0" layoutY="19.0" mnemonicParsing="false" onAction="#loadManageStudentsScene" prefHeight="92.0" prefWidth="133.0" text="Manage Students" />
             <Button layoutX="146.0" layoutY="150.0" mnemonicParsing="false" prefHeight="92.0" prefWidth="165.0" text="View Performance Reports" />
          </children>

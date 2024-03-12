@@ -1,2 +1,4 @@
-package com.gluonhq.charm.glisten.layout;public class Layer {
+package com.gluonhq.charm.glisten.layout;
+
+public class Layer {
 }

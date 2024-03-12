@@ -1,4 +1,4 @@
-package nlrs_main2;
+package com.example.nlrs_main;
 
 public class ManageStudents_Controller
 {
