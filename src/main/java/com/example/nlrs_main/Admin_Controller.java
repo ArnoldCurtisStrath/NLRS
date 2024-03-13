@@ -13,8 +13,10 @@ import java.io.IOException;
 public class Admin_Controller extends Login_Page {
 
     @FXML
-    public void loadManageStudentsScene(ActionEvent event) {
-        try {
+    public void loadManageStudentsScene(ActionEvent event)
+    {
+        try
+        {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Manage_Students.fxml"));
             Parent root1 = fxmlLoader.load();
 
@@ -48,6 +50,27 @@ public class Admin_Controller extends Login_Page {
     {
         e.printStackTrace();
     }
+    }
+
+    @FXML
+    public void loadCreateReviewStage(ActionEvent event)
+    {
+        try
+        {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreateReview.fxml"));
+            Parent root1 = fxmlLoader.load();
+
+            // Create a new stage
+            Stage createReviewStage = new Stage();
+            createReviewStage.setTitle("Create Review");
+            createReviewStage.initModality(Modality.APPLICATION_MODAL);
+            createReviewStage.setScene(new Scene(root1));
+            createReviewStage.showAndWait();
+
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
