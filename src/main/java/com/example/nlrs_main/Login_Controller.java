@@ -49,7 +49,7 @@ public class Login_Controller extends ReadFromDB {
                         messageLabel.setText("Incorrect credentials. Please try again.");
                     }
                 } else {
-                    messageLabel.setText("Select Account Type!!");
+                    messageLabel.setText("Select Account Type!");
                 }
             } else {
                 messageLabel.setText("Fill in the Details");
