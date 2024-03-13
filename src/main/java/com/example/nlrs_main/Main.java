@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -21,8 +22,9 @@ public class Main extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
         Parent loginRoot = fxmlLoader.load();
-        Scene loginScene = new Scene(loginRoot, 600, 400);
+        Scene loginScene = new Scene(loginRoot, 594, 400);
 
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(loginScene);
         primaryStage.show();

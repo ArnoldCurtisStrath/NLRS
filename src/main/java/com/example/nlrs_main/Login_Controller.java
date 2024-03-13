@@ -3,9 +3,9 @@ package com.example.nlrs_main;
 import com.example.nlrs_main.DatabaseConnector.ReadFromDB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 public class Login_Controller extends ReadFromDB {
     @FXML
@@ -15,36 +15,50 @@ public class Login_Controller extends ReadFromDB {
     private TextField userIDtf;
 
     @FXML
-    private TextField passwordtf;
+    public Button cancelButton;
 
     @FXML
-    private Label messageLabel;
+    private PasswordField passwordtf;
+
+    @FXML
+    private Label messageLabel; // Added message label
 
     private Runnable onLoginHandler;
 
     @FXML
+    private void cancelButtonAction(ActionEvent event){
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
     private void loginButton(ActionEvent event) {
-        String accountType = getAccountType();
         String userID = userIDtf.getText();
         String password = passwordtf.getText();
 
         try {
-
-            ReadFromDB dbReader = new ReadFromDB();
-            boolean loginSuccess = dbReader.getLoginDetailsFromDB(userID, password, accountType);
-
-            if (loginSuccess) {
-                messageLabel.setText("Login successful!");
-                if (onLoginHandler != null) {
-                    onLoginHandler.run();
+            if (!userID.isBlank() && !password.isBlank()) {
+                if (!accountTypeChoiceBox.getValue().isBlank()) {
+                    ReadFromDB dbReader = new ReadFromDB();
+                    boolean loginSuccess = dbReader.getLoginDetailsFromDB(userID, password);
+                    if (loginSuccess) {
+                        if (onLoginHandler != null) {
+                            onLoginHandler.run();
+                        }
+                    } else {
+                        messageLabel.setText("Incorrect credentials. Please try again.");
+                    }
+                } else {
+                    messageLabel.setText("Select Account Type!");
                 }
             } else {
-                messageLabel.setText("Incorrect credentials. Please try again.");
+                messageLabel.setText("Fill in the Details");
             }
         } catch (NumberFormatException e) {
             messageLabel.setText("Invalid userID. Please enter a valid integer.");
         }
     }
+
 
 
     public String getAccountType() {
