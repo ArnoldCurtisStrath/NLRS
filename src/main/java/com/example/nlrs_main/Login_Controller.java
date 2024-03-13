@@ -18,7 +18,7 @@ public class Login_Controller extends ReadFromDB {
     private TextField passwordtf;
 
     @FXML
-    private Label messageLabel; // Added message label
+    private Label messageLabel;
 
     private Runnable onLoginHandler;
 
@@ -31,7 +31,7 @@ public class Login_Controller extends ReadFromDB {
         try {
 
             ReadFromDB dbReader = new ReadFromDB();
-            boolean loginSuccess = dbReader.getLoginDetailsFromDB(userID, password);
+            boolean loginSuccess = dbReader.getLoginDetailsFromDB(userID, password, accountType);
 
             if (loginSuccess) {
                 messageLabel.setText("Login successful!");
