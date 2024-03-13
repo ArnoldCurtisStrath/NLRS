@@ -1,13 +1,15 @@
 package com.example.nlrs_main.DatabaseConnector;
 
+import javafx.scene.control.ChoiceBox;
+
 import java.sql.*;
 
 public class ReadFromDB {
     public boolean getLoginDetailsFromDB(String userID, String password) {
         try {
-            String host = "jdbc:mysql://localhost:3306/NLRS";
+            String host = "jdbc:mysql://localhost:3306/nlp_schema";
             String uName = "root";
-            String uPass = "1234";
+            String uPass = "alvinmajawa2020*";
             Connection con = DriverManager.getConnection(host, uName, uPass);
 
             String sql = "SELECT COUNT(*) FROM users WHERE userID = ? AND password = ?";

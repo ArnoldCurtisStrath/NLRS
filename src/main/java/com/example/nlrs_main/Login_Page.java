@@ -13,7 +13,6 @@ public class Login_Page extends Users
     {
         userID = new SimpleStringProperty();
         password = new SimpleStringProperty();
-
     }
 
     public String getuserID() {
