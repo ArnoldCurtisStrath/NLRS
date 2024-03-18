@@ -83,6 +83,15 @@ public class Users {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
     public String getCountry() {
         return country;
     }

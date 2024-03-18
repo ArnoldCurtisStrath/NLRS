@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.nlrs_main.StudentsF_Controller">
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -55,12 +55,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" />
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.columnIndex="1" />
-            <Button layoutX="217.0" layoutY="10.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.rowIndex="2" />
-            <Button layoutX="217.0" layoutY="10.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.rowIndex="1" />
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button layoutX="10.0" layoutY="224.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" onAction="#loadAnswerReviewsScene" />
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.columnIndex="1" onAction="#loadAnswerReviewsScene" />
+            <Button layoutX="217.0" layoutY="10.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.rowIndex="2" onAction="#loadAnswerReviewsScene" />
+            <Button layoutX="217.0" layoutY="10.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.rowIndex="1" onAction="#loadAnswerReviewsScene" />
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1"  onAction="#loadAnswerReviewsScene"/>
+            <Button layoutX="10.0" layoutY="224.0" mnemonicParsing="false" prefHeight="88.0" prefWidth="186.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2"  onAction="#loadAnswerReviewsScene"/>
          </children>
       </GridPane>
    </center>
