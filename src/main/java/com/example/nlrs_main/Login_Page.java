@@ -39,8 +39,4 @@ public class Login_Page extends Users
         this.password.set(password);
     }
 
-
-
-
-
 }

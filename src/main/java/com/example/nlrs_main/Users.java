@@ -14,9 +14,12 @@ public class Users {
     String dateOfBirth;
     String email;
     String country;
+    String courseName;
+    boolean userStatus;
 
-    public void setUser(int newUserID,String newUserType,String newUserName, String newPassword,String newFirstName, String newLastName,String newDateOfBirth,
-                        int newContact, String newEmail,String newCountry){
+
+    public void setUsers(int newUserID,String newUserType,String newUserName, String newPassword,String newFirstName, String newLastName,String newDateOfBirth,
+                         String newEmail, int newContact, String newCountry, String newCourse, boolean newUserStatus){
         this.userName = newUserName;
         this.firstName = newFirstName;
         this.lastName = newLastName;
@@ -27,6 +30,9 @@ public class Users {
         this.dateOfBirth = newDateOfBirth;
         this.email = newEmail;
         this.country = newCountry;
+        this.courseName = newCourse;
+        this.userStatus = newUserStatus;;
+
     }
 
     public void setUserName(String newUserName) {
@@ -83,15 +89,6 @@ public class Users {
     public void setCountry(String country) {
         this.country = country;
     }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -100,5 +97,21 @@ public class Users {
     }
     public String getEmail() {
         return email;
+    }
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+    public String getCourseName() {
+        return courseName;
+    }
+    public boolean isUserStatus() {
+        return userStatus;
+    }
+    public void setUserStatus(boolean userStatus) {
+        this.userStatus = userStatus;
+    }
+    public boolean getUserStatus()
+    {
+        return userStatus;
     }
 }
