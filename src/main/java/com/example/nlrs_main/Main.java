@@ -26,7 +26,7 @@ public class Main extends Application {
 
         //The commented out line of code is what hides the minimize, close and maximize buttons
         //I commented it, so you can be able to use them if you want.
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(loginScene);
         primaryStage.show();
