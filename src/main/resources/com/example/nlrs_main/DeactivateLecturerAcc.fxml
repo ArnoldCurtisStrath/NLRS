@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.nlrs_main.DeactivateLecturerAcc_Controller">
+   <children>
+      <TableView fx:id="tableView" layoutX="11.0" layoutY="137.0" prefHeight="438.0" prefWidth="1062.0">
+        <columns>
+          <TableColumn fx:id="idNumberC" prefWidth="61.600003242492676" text="ID" />
+          <TableColumn fx:id="usernameC" prefWidth="78.39999389648438" text="User Name" />
+            <TableColumn fx:id="passwordC" prefWidth="72.80001831054688" text="Password" />
+            <TableColumn fx:id="firstNameC" prefWidth="90.39997863769531" text="First Name" />
+            <TableColumn fx:id="lastNameC" prefWidth="75.0" text="Last Name" />
+            <TableColumn fx:id="dOBC" prefWidth="114.39996337890625" text="Date Of Birth" />
+            <TableColumn fx:id="emailC" prefWidth="137.5999755859375" text="E-Mail" />
+            <TableColumn fx:id="phoneNumberC" prefWidth="134.4000244140625" text="Phone Number" />
+            <TableColumn fx:id="countryC" prefWidth="121.5999755859375" text="Country" />
+            <TableColumn fx:id="courseC" prefWidth="85.60009765625" text="Course" />
+            <TableColumn fx:id="statusC" prefWidth="92.80010986328125" text="Status" />
+        </columns>
+      </TableView>
+      <TextField fx:id="searchBox" layoutX="146.0" layoutY="95.0" prefHeight="26.0" prefWidth="920.0" promptText="Enter Lecturer Id" />
+      <Label layoutX="27.0" layoutY="100.0" text="Search Lecturer By ID: " />
+      <AnchorPane prefHeight="91.0" prefWidth="1080.0">
+         <children>
+            <Label fx:id="messageLabel" layoutX="438.0" layoutY="59.0" text="Successfully Deactivated User Account" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -24,7 +24,9 @@ public class Main extends Application {
         Parent loginRoot = fxmlLoader.load();
         Scene loginScene = new Scene(loginRoot, 594, 400);
 
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        //The commented out line of code is what hides the minimize, close and maximize buttons
+        //I commented it, so you can be able to use them if you want.
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(loginScene);
         primaryStage.show();

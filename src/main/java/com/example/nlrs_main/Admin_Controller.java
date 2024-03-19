@@ -19,7 +19,6 @@ public class Admin_Controller extends Login_Page {
         {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Manage_Students.fxml"));
             Parent root1 = fxmlLoader.load();
-
             // Create a new stage
             Stage manageStudentsStage = new Stage();
             manageStudentsStage.setTitle("Manage Students");
@@ -32,24 +31,20 @@ public class Admin_Controller extends Login_Page {
     }
 
     @FXML
-    public void loadManageLecturersScene(ActionEvent event)
-    {
+    public void loadManageLecturersScene(ActionEvent event) {
         try {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Manage_Lecturers.fxml"));
-        Parent root1 = fxmlLoader.load();
-
-        // Create a new stage
-        Stage manageLecturersStage = new Stage();
-        manageLecturersStage.setTitle("Manage Lecturers");
-        manageLecturersStage.initModality(Modality.APPLICATION_MODAL);
-        manageLecturersStage.setScene(new Scene(root1));
-        manageLecturersStage.showAndWait();
-    } catch(
-    IOException e)
-
-    {
-        e.printStackTrace();
-    }
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Manage_Lecturers.fxml"));
+            Parent root1 = fxmlLoader.load();
+            // Create a new stage
+            Stage manageLecturersStage = new Stage();
+            manageLecturersStage.setTitle("Manage Lecturers");
+            manageLecturersStage.initModality(Modality.APPLICATION_MODAL);
+            manageLecturersStage.setScene(new Scene(root1));
+            manageLecturersStage.showAndWait();
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -72,7 +67,5 @@ public class Admin_Controller extends Login_Page {
         }
 
     }
-
-
 
 }

@@ -1,19 +1,32 @@
 package com.example.nlrs_main.DatabaseConnector;
 
-import javafx.scene.control.ChoiceBox;
+import com.example.nlrs_main.Users;
 
 import java.sql.*;
 
-public class ReadFromDB {
+public class ReadWriteDB extends Users {
+    private Connection databaseLink;
+
+    public Connection getConnection(){
+        String dbName = "nlrs";
+        String user = "root";
+        String password = "1234";
+        String url = "jdbc:mysql://10.51.58.125/"+dbName;
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            databaseLink = DriverManager.getConnection(url,user,password);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return databaseLink;
+    }
     public boolean getLoginDetailsFromDB(String userID, String password) {
         try {
-            String host = "jdbc:mysql://localhost:3306/nlrs";
-            String uName = "root";
-            String uPass = "1234";
-            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Connection dbConnect = getConnection();
 
             String sql = "SELECT COUNT(*) FROM users WHERE userID = ? AND password = ?";
-            try (PreparedStatement preparedStatement = con.prepareStatement(sql)) {
+            try (PreparedStatement preparedStatement = dbConnect.prepareStatement(sql)) {
                 preparedStatement.setString(1, userID);
                 preparedStatement.setString(2, password);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -28,4 +41,5 @@ public class ReadFromDB {
         }
         return false;
     }
+
 }
