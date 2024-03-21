@@ -7,20 +7,21 @@ import java.sql.*;
 public class ReadWriteDB extends Users {
     private Connection databaseLink;
 
-    public Connection getConnection(){
-        String dbName = "nlrs";
+    public Connection getConnection() {
+        String dbName = "nlp_schema";
         String user = "root";
-        String password = "1234";
-        String url = "jdbc:mysql://10.51.58.125/"+dbName;
+        String password = "alvinmajawa2020*";
+        String url = "jdbc:mysql://localhost/" + dbName;
 
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            databaseLink = DriverManager.getConnection(url,user,password);
-        }catch (Exception e){
+            databaseLink = DriverManager.getConnection(url, user, password);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return databaseLink;
     }
+
     public boolean getLoginDetailsFromDB(String userID, String password) {
         try {
             Connection dbConnect = getConnection();
@@ -41,5 +42,28 @@ public class ReadWriteDB extends Users {
         }
         return false;
     }
+
+    public String getUserDetailsFromDB(String userID) {
+        try {
+            Connection dbConnect = getConnection();
+
+            String sql = "SELECT firstName, lastName FROM users WHERE userID = ?";
+            try (PreparedStatement preparedStatement = dbConnect.prepareStatement(sql)) {
+                preparedStatement.setString(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    String firstName = resultSet.getString("firstName");
+                    String lastName = resultSet.getString("lastName");
+                    System.out.println(firstName + " " + lastName);
+                    return firstName + " " + lastName;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }
