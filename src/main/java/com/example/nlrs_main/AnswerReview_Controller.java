@@ -1,11 +1,15 @@
 package com.example.nlrs_main;
 
+import com.example.nlrs_main.DatabaseConnector.ReadWriteDB;
 import com.example.nlrs_main.NLS.NaturalLanguageAnalyzer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +32,14 @@ public class AnswerReview_Controller {
 
     @FXML
     private void submitReviews() {
+        StudentsF_Controller studentsF_controller = new StudentsF_Controller();
         for (QuestionReviewContainer container : questionReviewContainers) {
             String review = container.getReview();
             System.out.println("Review submitted for question: " + container.getQuestion() + "\nReview: " + review);
             NaturalLanguageAnalyzer nls = new NaturalLanguageAnalyzer();
             int reviewV = nls.analyzeSentiment(review);
             System.out.println("This is the rating for the review of the question  " + reviewV);
+            studentsF_controller.inputReview(review, reviewV);
         }
     }
 

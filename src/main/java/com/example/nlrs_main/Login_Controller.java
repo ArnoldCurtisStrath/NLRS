@@ -4,15 +4,16 @@ import com.example.nlrs_main.DatabaseConnector.ReadWriteDB;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 //This is poor but do not remove the commented out end of the login_Controller className
 //It works together with the methods that display images/Icons on our windows.
@@ -79,6 +80,29 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
         } catch (NumberFormatException e) {
             messageLabel.setText("Invalid userID. Please enter a valid integer.");
         }
+    }
+
+    public boolean getUsernames(String userID) throws Exception
+    {
+        String userName = getUserName();
+        try {
+            Connection dbConnect = getConnection();
+
+            String sql = "SELECT COUNT(*) FROM users WHERE userID = ?";
+            try (PreparedStatement preparedStatement = dbConnect.prepareStatement(sql)) {
+                preparedStatement.setString(1, userName);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                setUserName(userName);
+
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count == 1;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public String getAccountType() {
