@@ -55,15 +55,18 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
     private void loginButton(ActionEvent event) {
         String userID = userIDtf.getText();
         String password = passwordtf.getText();
-        String userType = accountTypeChoiceBox.getValue();
+        setUserID(userID);
 
 
+        //I am going to cook and do some html for the project.
+        //I will fix this probably tonight or later in the afternoon.
         try {
             if (!userID.isBlank() && !password.isBlank()) {
                 if (!accountTypeChoiceBox.getValue().isBlank()) {
                     ReadWriteDB dbReader = new ReadWriteDB();
-                    boolean loginSuccess = dbReader.getLoginDetailsFromDB(userID, password,userType);
+                    boolean loginSuccess = dbReader.getLoginDetailsFromDB(userID, password);
                     if (loginSuccess) {
+                        setUserID(userID);
                         if (onLoginHandler != null) {
                             onLoginHandler.run();
                             System.out.println(getAccountType());

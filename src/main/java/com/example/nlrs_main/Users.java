@@ -1,5 +1,6 @@
 package com.example.nlrs_main;
 
+import java.util.Date;
 import java.util.Scanner;
 
 public class Users {
@@ -8,7 +9,7 @@ public class Users {
     boolean success = false;
     String lastName;
     String password;
-    int userID;
+    String userID;
     int contact;
     String userType;
     String dateOfBirth;
@@ -16,10 +17,12 @@ public class Users {
     String country;
     String courseName;
     boolean userStatus;
+    Date realtimeDate;
 
 
-    public void setUsers(int newUserID,String newUserType,String newUserName, String newPassword,String newFirstName, String newLastName,String newDateOfBirth,
-                         String newEmail, int newContact, String newCountry, String newCourse, boolean newUserStatus){
+
+    public void setUsers(String newUserID,String newUserType,String newUserName, String newPassword,String newFirstName, String newLastName,String newDateOfBirth,
+                         String newEmail, int newContact, String newCountry, String newCourse, boolean newUserStatus, Date newRealTimeDate){
         this.userName = newUserName;
         this.firstName = newFirstName;
         this.lastName = newLastName;
@@ -31,8 +34,17 @@ public class Users {
         this.email = newEmail;
         this.country = newCountry;
         this.courseName = newCourse;
-        this.userStatus = newUserStatus;;
+        this.userStatus = newUserStatus;
+        this.realtimeDate = newRealTimeDate;
 
+    }
+
+    public void setRealtimeDate(Date realtimeDate) {
+        this.realtimeDate = realtimeDate;
+    }
+
+    public Date getRealtimeDate() {
+        return realtimeDate;
     }
 
     public void setUserName(String newUserName) {
@@ -41,12 +53,15 @@ public class Users {
     public String getUserName() {
         return userName;
     }
-    public void setFirstName(String newFirstName) {
-        this.userName = newFirstName;
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
+
     public String getFirstName() {
         return firstName;
     }
+
     public void setLastName(String newLastName) {
         this.lastName = newLastName;
     }
@@ -59,10 +74,10 @@ public class Users {
     public String getPassword() {
         return password;
     }
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
     public void setIfSuccessful(boolean succeeded) {
