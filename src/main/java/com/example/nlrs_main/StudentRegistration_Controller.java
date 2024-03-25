@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 //This is poor but do not remove the commented out end of the login_Controller className
 //It works together with the methods that display images/Icons on our windows.
-public class LecturerRegistration_Controller extends Login_Controller /**implements Initializable**/ {
+public class StudentRegistration_Controller extends Login_Controller /**implements Initializable**/ {
 
     @FXML
     private ImageView registrationImage;
@@ -29,7 +29,7 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
     private Button cancelButton;
 
     @FXML
-    private Button lecturerRegistrationButtonid;
+    private Button studentRegistrationButtonid;
 
     @FXML
     private PasswordField defaultPasswordTF;
@@ -62,17 +62,17 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
     private Label registrationMessageFailureLabel;
 
     @FXML
-    private void cancelButton2Action(ActionEvent event) {
+    private void cancelButton3Action(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    private void registrationButtonAction(ActionEvent event) {
+    private void registrationButton1Action(ActionEvent event) {
         avoidDuplication();
     }
 
-    public void lecturerRegistration() {
+    public void studentRegistration() {
         try {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
@@ -88,13 +88,13 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
                 setPassword("Cuba2030");
                 String defaultPassword = getPassword();
                 String userName = firstName + lastName;
-                setUserType("Lecturer");
+                setUserType("Student");
                 String userType = getUserType();
                 setUserStatus(true);
                 boolean userStatus = getUserStatus();
 
                 String insertDbFields = "INSERT INTO users (userType, userName, password, firstName, lastName, dateOfBirth, " +
-                        "email, phoneNumber, course, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        "email, phoneNumber, country, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement statement = dbConnect.prepareStatement(insertDbFields);
                 statement.setString(1, userType);
@@ -111,9 +111,9 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
 
                 int rowsInserted = statement.executeUpdate();
                 if (rowsInserted > 0) {
-                    registrationSuccessMessageLabel.setText(userType+" has been successfully Registered!");
+                    registrationSuccessMessageLabel.setText(userType + " has been successfully Registered!");
                 } else {
-                    registrationMessageFailureLabel.setText("Registration failed. Please try again.");
+                    registrationMessageFailureLabel.setText(userType + " Account Registration failed. Please try again.");
                 }
             } else {
                 registrationMessageFailureLabel.setText("Failed to connect to the database.");
@@ -123,6 +123,7 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
             registrationMessageFailureLabel.setText("Complete the form!!");
         }
     }
+
     public void avoidDuplication(){
         try {
             ReadWriteDB con = new ReadWriteDB();
@@ -140,13 +141,14 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
                 setPassword("Cuba2030");
                 String defaultPassword = getPassword();
                 String userName = firstName + lastName;
-                setUserType("Lecturer");
+                setUserType("Student");
                 String userType = getUserType();
                 setUserStatus(true);
                 boolean userStatus = getUserStatus();
 
-                String sqlQuery = "SELECT * FROM users WHERE userType = ? AND userName = ? AND password = ? AND firstName = ? AND lastName = ? AND dateOfBirth = ? " +
-                        "AND email = ? AND phoneNumber = ? AND country = ? AND status = ?";
+                String sqlQuery = "SELECT * FROM users WHERE userType = ? AND userName = ? AND password = ? AND " +
+                        "firstName = ? AND lastName = ? AND dateOfBirth = ? " + "AND email = ? AND phoneNumber = ? AND " +
+                        "country = ? AND status = ?";
                 PreparedStatement statement = dbConnect.prepareStatement(sqlQuery);
                 statement.setString(1, userType);
                 statement.setString(2, userName);
@@ -164,7 +166,7 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
                 if (resultSet.next()) {
                     registrationMessageFailureLabel.setText("User: " + firstName + " " + lastName + " already exists!!");
                 } else {
-                    lecturerRegistration();
+                    studentRegistration();
                 }
             } else {
                 registrationMessageFailureLabel.setText("Failed to connect to the database.");
@@ -173,7 +175,6 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
             e.printStackTrace();
             registrationMessageFailureLabel.setText("Please Fill-Up the Registration Form!");
         }
-
     }
 
     //I have commented out this part. So it doesn't give any of us problems.

@@ -5,16 +5,22 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class DeactivateLecturerAcc_Controller extends Users /**implements Initializable**/ {
+public class DeactivateStudentAcc_Controller extends Users /**implements Initializable**/ {
     @FXML
     private Button closeButton;
     @FXML
@@ -33,13 +39,17 @@ public class DeactivateLecturerAcc_Controller extends Users /**implements Initia
     private Label passwordErrorMessage;
     @FXML
     private Button deactivationButton;
+    @FXML
+    private Button searchButtonid;
+
     ReadWriteDB connection = new ReadWriteDB();
     Connection dbConnect = connection.getConnection();
-    /**@Override
+
+   /**@Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    Image image = new Image("C:/Users/Alvin Majawa/Desktop/IS Project Final/src/main/java/com/" +
-            "example/nlrs_main/ImagesAndIcons/Account De-activation.png");
-    deactivationIcon.setImage(image);
+        Image image = new Image("C:/Users/Alvin Majawa/Desktop/IS Project Final/src/main/java/com/" +
+                "example/nlrs_main/ImagesAndIcons/Account De-activation.png");
+        deactivationIcon.setImage(image);
     }**/
     @FXML
     private void closeButtonAction(ActionEvent event){
@@ -51,7 +61,7 @@ public class DeactivateLecturerAcc_Controller extends Users /**implements Initia
     public void searchButtonAction(ActionEvent event){
         try {
             int userID = Integer.parseInt(accountID.getText());
-            getLecturerDetailsFromDB(userID);
+            getStudentDetailsFromDB(userID);
         } catch (NumberFormatException e) {
             idErrorMessage.setText("Enter a valid Account ID!!");
         }
@@ -60,7 +70,7 @@ public class DeactivateLecturerAcc_Controller extends Users /**implements Initia
     private void deactivationButtonAction(ActionEvent event) {
         try {
             int userID = Integer.parseInt(accountID.getText());
-            getLecturerDetailsFromDB(userID);
+            getStudentDetailsFromDB(userID);
         } catch (NumberFormatException e) {
             idErrorMessage.setText("Enter a valid Account ID!!");
         }
@@ -126,7 +136,7 @@ public class DeactivateLecturerAcc_Controller extends Users /**implements Initia
         }
     }
 
-    public void getLecturerDetailsFromDB(int userID) {
+    public void getStudentDetailsFromDB(int userID) {
         try {
             if (dbConnect != null) {
                 String sql = "SELECT firstName, lastName, userType, status FROM users WHERE userID = ?";
@@ -140,12 +150,12 @@ public class DeactivateLecturerAcc_Controller extends Users /**implements Initia
                         String userType = resultSet.getString("userType");
                         boolean userStatus = resultSet.getBoolean("status");
 
-                        if (!userType.equals("Lecturer")) {
-                            idErrorMessage.setText("User: " + userID + " is not a lecturer!!");
+                        if (!userType.equals("Student")) {
+                            idErrorMessage.setText("User: " + userID + " is not a Student!!");
                         } else if (!userStatus) {
                             idErrorMessage.setText("User: " + userID + "'s Account is already De-Activated!!");
                         } else {
-
+                            idErrorMessage.setText("User: " + userID + "'s Account Exists And It's an Active Account!!");
                             verifyAdminPasswords();
                         }
                     } else {
