@@ -28,17 +28,20 @@
     <center>
         <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField layoutX="14.0" layoutY="27.0" prefHeight="25.0" prefWidth="165.0" />
-                <ChoiceBox layoutX="225.0" layoutY="27.0" prefWidth="150.0" />
-                <ChoiceBox layoutX="418.0" layoutY="27.0" prefWidth="150.0" />
+                <TextField fx:id="reviewTitle" layoutX="14.0" layoutY="27.0" prefHeight="25.0" prefWidth="165.0" />
+                <ChoiceBox fx:id="CRLec" layoutX="225.0" layoutY="27.0" prefWidth="150.0" />
+                <ChoiceBox fx:id="CRUnit" layoutX="418.0" layoutY="27.0" prefWidth="150.0" />
                 <Label layoutX="32.0" layoutY="6.0" prefHeight="17.0" prefWidth="130.0" text="Review Title " />
                 <Label layoutX="225.0" layoutY="6.0" prefHeight="17.0" prefWidth="136.0" text="Lecturer" />
                 <Label layoutX="418.0" layoutY="6.0" prefHeight="17.0" prefWidth="142.0" text="Unit" />
                 <Label layoutX="14.0" layoutY="66.0" prefHeight="17.0" prefWidth="175.0" text="Choose Category" />
                 <ChoiceBox fx:id="categoryChoiceBox" layoutX="14.0" layoutY="83.0" prefWidth="200.0" />
                 <TextField fx:id="questionTextField" layoutX="225.0" layoutY="290.0" prefHeight="25.0" prefWidth="300.0" promptText="Enter question for selected category" />
-                <Button fx:id="addQuestionButton" layoutX="535.0" layoutY="290.0" mnemonicParsing="false" text="Add Question"/>
+                <Button fx:id="addQuestionButton" layoutX="535.0" layoutY="290.0" mnemonicParsing="false" text="Add Question" />
                 <ListView fx:id="questionsListView" layoutX="225.0" layoutY="83.0" prefHeight="200.0" prefWidth="350.0" />
+                <Button fx:id="submitCreatedReviewButton" layoutX="14.0" layoutY="199.0" mnemonicParsing="false" onAction="#handleSubmitButtonAction" prefHeight="37.0" prefWidth="158.0" text="SUBMIT" />
+            <Label fx:id="registrationSuccessMessageLabel" layoutX="32.0" layoutY="266.0" prefHeight="17.0" prefWidth="185.0" />
+            <Label fx:id="registrationMessageFailureLabel" layoutX="32.0" layoutY="236.0" prefHeight="17.0" prefWidth="180.0" />
             </children>
         </Pane>
     </center>

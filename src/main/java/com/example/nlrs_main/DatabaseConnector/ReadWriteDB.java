@@ -8,9 +8,9 @@ public class ReadWriteDB extends Users {
     private Connection databaseLink;
 
     public Connection getConnection() {
-        String dbName = "nlp_schema";
+        String dbName = "nlrs";
         String user = "root";
-        String password = "alvinmajawa2020*";
+        String password = "1234";
         String url = "jdbc:mysql://localhost/" + dbName;
 
         try {

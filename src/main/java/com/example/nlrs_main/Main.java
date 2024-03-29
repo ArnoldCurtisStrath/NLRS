@@ -8,6 +8,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+//Hello Majawa
+//This is Genius territory
+//Man cant use comments
+
 
 public class Main extends Application {
     private Stage primaryStage;
@@ -36,22 +40,35 @@ public class Main extends Application {
     }
 
     private void handleLogin(Login_Controller loginController) {
-        String accountType = loginController.getAccountType();
-        switch (accountType) {
-            case "Admin":
-                loadAdminScene();
-                break;
-            case "Student":
-                loadStudentScene();
-                break;
-            case "Lecturer":
-                // Handle Lecturer case
-                break;
-            default:
-                System.out.println("Invalid account type selected");
+        String userID = loginController.getUserID();
+        try {
+            String accountType = loginController.getUserAccountType(userID);
+            if (accountType != null) {
+                String selectedAccountType = loginController.accountTypeChoiceBox.getValue();
+                if (selectedAccountType.equalsIgnoreCase(accountType)) {
+                    switch (accountType) {
+                        case "Admin":
+                            loadAdminScene();
+                            break;
+                        case "Student":
+                            loadStudentScene();
+                            break;
+                        case "Lecturer":
+                            // Handle Lecturer case
+                            break;
+                        default:
+                            System.out.println("Invalid account type retrieved from the database");
+                    }
+                } else {
+                    System.out.println("Invalid account type selected");
+                }
+            } else {
+                System.out.println("Failed to retrieve account type from the database");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
     private void loadAdminScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Admin_Page.fxml"));

@@ -21,7 +21,7 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
     @FXML
     private ImageView loginIcon;
     @FXML
-    private ChoiceBox<String> accountTypeChoiceBox;
+    ChoiceBox<String> accountTypeChoiceBox;
 
     @FXML
     private TextField userIDtf;
@@ -57,9 +57,6 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
         String password = passwordtf.getText();
         setUserID(userID);
 
-
-        //I am going to cook and do some html for the project.
-        //I will fix this probably tonight or later in the afternoon.
         try {
             if (!userID.isBlank() && !password.isBlank()) {
                 if (!accountTypeChoiceBox.getValue().isBlank()) {
@@ -69,7 +66,6 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
                         setUserID(userID);
                         if (onLoginHandler != null) {
                             onLoginHandler.run();
-                            System.out.println(getAccountType());
                         }
                     } else {
                         messageLabel.setText("Incorrect credentials. Please try again.");
@@ -108,8 +104,23 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
         return false;
     }
 
-    public String getAccountType() {
-        return accountTypeChoiceBox.getValue();
+    public String getUserAccountType(String userID) throws Exception {
+        try {
+            Connection dbConnect = getConnection();
+
+            String sql = "SELECT userType FROM users WHERE userID = ?";
+            try (PreparedStatement preparedStatement = dbConnect.prepareStatement(sql)) {
+                preparedStatement.setString(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    return resultSet.getString("userType");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setOnLoginHandler(Runnable handler) {

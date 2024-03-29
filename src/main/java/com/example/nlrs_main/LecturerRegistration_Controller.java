@@ -3,24 +3,17 @@ package com.example.nlrs_main;
 import com.example.nlrs_main.DatabaseConnector.ReadWriteDB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
 
-//This is poor but do not remove the commented out end of the login_Controller className
-//It works together with the methods that display images/Icons on our windows.
-public class LecturerRegistration_Controller extends Login_Controller /**implements Initializable**/ {
+public class LecturerRegistration_Controller extends Login_Controller {
 
     @FXML
     private ImageView registrationImage;
@@ -69,10 +62,23 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
 
     @FXML
     private void registrationButtonAction(ActionEvent event) {
-        avoidDuplication();
+        if (validateFields()) {
+            avoidDuplication();
+        } else {
+            registrationMessageFailureLabel.setText("Please fill up the registration form.");
+        }
     }
 
-    public void lecturerRegistration() {
+    private boolean validateFields() {
+        return !firstNameTF.getText().isEmpty() &&
+                !lastNameTF.getText().isEmpty() &&
+                !dateOfBirthTF.getText().isEmpty() &&
+                !emailTF.getText().isEmpty() &&
+                !countryTF.getText().isEmpty() &&
+                !phoneNumberTF.getText().isEmpty();
+    }
+
+    private void lecturerRegistration() {
         try {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
@@ -84,7 +90,6 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
                 String email = emailTF.getText();
                 String country = countryTF.getText();
                 String phoneNumber = phoneNumberTF.getText();
-                //String courseName = courseNameTF.getText();
                 setPassword("Cuba2030");
                 String defaultPassword = getPassword();
                 String userName = firstName + lastName;
@@ -106,37 +111,38 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
                 statement.setString(7, email);
                 statement.setString(8, phoneNumber);
                 statement.setString(9, country);
-                //statement.setString(10, courseName);
                 statement.setBoolean(10, userStatus);
 
                 int rowsInserted = statement.executeUpdate();
                 if (rowsInserted > 0) {
-                    registrationSuccessMessageLabel.setText(userType+" has been successfully Registered!");
+                    registrationSuccessMessageLabel.setText(userType + " has been successfully Registered!");
                 } else {
                     registrationMessageFailureLabel.setText("Registration failed. Please try again.");
                 }
             } else {
                 registrationMessageFailureLabel.setText("Failed to connect to the database.");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            registrationMessageFailureLabel.setText("Registration failed due to a database error.");
         } catch (Exception e) {
             e.printStackTrace();
-            registrationMessageFailureLabel.setText("Complete the form!!");
+            registrationMessageFailureLabel.setText("An unexpected error occurred during registration.");
         }
     }
-    public void avoidDuplication(){
+
+    private void avoidDuplication() {
         try {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
 
             if (dbConnect != null) {
-
                 String firstName = firstNameTF.getText();
                 String lastName = lastNameTF.getText();
                 String dateOfBirth = dateOfBirthTF.getText();
                 String email = emailTF.getText();
                 String country = countryTF.getText();
                 String phoneNumber = phoneNumberTF.getText();
-                //String courseName = courseNameTF.getText();
                 setPassword("Cuba2030");
                 String defaultPassword = getPassword();
                 String userName = firstName + lastName;
@@ -146,7 +152,7 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
                 boolean userStatus = getUserStatus();
 
                 String sqlQuery = "SELECT * FROM users WHERE userType = ? AND userName = ? AND password = ? AND firstName = ? AND lastName = ? AND dateOfBirth = ? " +
-                        "AND email = ? AND phoneNumber = ? AND country = ? AND status = ?";
+                        "AND email = ? AND phoneNumber = ? AND course = ? AND status = ?";
                 PreparedStatement statement = dbConnect.prepareStatement(sqlQuery);
                 statement.setString(1, userType);
                 statement.setString(2, userName);
@@ -157,31 +163,23 @@ public class LecturerRegistration_Controller extends Login_Controller /**impleme
                 statement.setString(7, email);
                 statement.setString(8, phoneNumber);
                 statement.setString(9, country);
-                //statement.setString(10, courseName);
                 statement.setBoolean(10, userStatus);
 
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
-                    registrationMessageFailureLabel.setText("User: " + firstName + " " + lastName + " already exists!!");
+                    registrationMessageFailureLabel.setText("User: " + firstName + " " + lastName + " already exists!");
                 } else {
                     lecturerRegistration();
                 }
             } else {
                 registrationMessageFailureLabel.setText("Failed to connect to the database.");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            registrationMessageFailureLabel.setText("Database error occurred while checking for duplicates.");
         } catch (Exception e) {
             e.printStackTrace();
-            registrationMessageFailureLabel.setText("Please Fill-Up the Registration Form!");
+            registrationMessageFailureLabel.setText("An unexpected error occurred while checking for duplicates.");
         }
-
     }
-
-    //I have commented out this part. So it doesn't give any of us problems.
-    //But it works. so don't worry about the icons and don't change anything on it.
-    /**@Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image image = new Image("C://Users//Alvin Majawa//Desktop//IS Project Final//src//main//java//com//" +
-                "example//nlrs_main//ImagesAndIcons//registrationImage.png/");
-        registrationImage.setImage(image);
-    }**/
 }

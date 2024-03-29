@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.nlrs_main.AnswerReview_Controller">
+    <children>
+        <VBox spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <children>
+                <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="questionReviewContainer" spacing="20.0">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+                <Button mnemonicParsing="false" onAction="#submitReviews" text="Submit Reviews" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
