@@ -19,7 +19,7 @@ public class Users {
     boolean userStatus;
     Date realtimeDate;
 
-    String stuID;
+    private String studentID;
 
 
 
@@ -41,12 +41,12 @@ public class Users {
 
     }
 
-    public void setStuID(String stuID) {
-        this.stuID = stuID;
+    public void setStudentID(String userID) {
+        this.studentID = userID;
     }
 
-    public String getStuID() {
-        return stuID;
+    String getStudentID() {
+        return studentID;
     }
 
     public void setRealtimeDate(Date realtimeDate) {

@@ -19,30 +19,48 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-
 public class StudentsF_Controller implements Initializable {
 
     @FXML
     private Button unit1;
+    @FXML
+    private Button unit2;
+    @FXML
+    private Button unit3;
+    @FXML
+    private Button unit4;
+    @FXML
+    private Button unit5;
+    @FXML
+    private Button unit6;
+
+    private ReadWriteDB con;
+
+    private String studentID;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setUnitFromDB();
+        con = new ReadWriteDB();
+        setUnitButtonsFromDB();
     }
-    public void setUnitFromDB() {
+
+    private void setUnitButtonsFromDB() {
         try {
-            ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
             if (dbConnect != null) {
-                String query = "SELECT unitName FROM units WHERE unitID = 1";
+                String query = "SELECT unitName FROM units";
                 PreparedStatement statement = dbConnect.prepareStatement(query);
 
                 ResultSet resultSet = statement.executeQuery();
-                if (resultSet.next()) {
+                int buttonIndex = 1;
+                while (resultSet.next()) {
                     String unitName = resultSet.getString("unitName");
-                    unit1.setText(unitName);
-                } else {
-                    unit1.setText("Unit Name");
+                    Button unitButton = getButtonByIndex(buttonIndex);
+                    if (unitButton != null) {
+                        unitButton.setText(unitName);
+                        unitButton.setOnAction(this::loadAnswerReviewsScene);
+                    }
+                    buttonIndex++;
                 }
                 resultSet.close();
                 statement.close();
@@ -55,49 +73,55 @@ public class StudentsF_Controller implements Initializable {
             System.out.println("Error occurred: " + e.getMessage());
         }
     }
+
+    private Button getButtonByIndex(int index) {
+        switch (index) {
+            case 1:
+                return unit1;
+            case 2:
+                return unit2;
+            case 3:
+                return unit3;
+            case 4:
+                return unit4;
+            case 5:
+                return unit5;
+            case 6:
+                return unit6;
+            default:
+                return null;
+        }
+    }
+
     @FXML
     public void loadAnswerReviewsScene(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AnswerReview.fxml"));
             Parent root1 = fxmlLoader.load();
 
+            // Get the selected unit name from the button text
+            Button clickedButton = (Button) event.getSource();
+            String selectedUnitName = clickedButton.getText();
+
             // Create a new stage
             Stage answerReviewsStage = new Stage();
             answerReviewsStage.setTitle("Answer Review");
             answerReviewsStage.initModality(Modality.APPLICATION_MODAL); // This makes the new stage modal
-            answerReviewsStage.setScene(new Scene(root1));
+            Scene scene = new Scene(root1);
+            answerReviewsStage.setScene(scene);
+
+            // Initialize the AnswerReview_Controller with the selected unit name
+            AnswerReview_Controller controller = fxmlLoader.getController();
+            controller.setStudentID(this.studentID);
+            controller.initialize(selectedUnitName);
+
             answerReviewsStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void inputReview(String comment, int CoScore) {
-        try {
-            ReadWriteDB con = new ReadWriteDB();
-            Connection dbconnect = con.getConnection();
-
-            if (dbconnect != null) {
-                String InsertDBReview = "INSERT INTO feedBack (Comment, CoScore) VALUES (?,?)";
-
-                PreparedStatement statement = dbconnect.prepareStatement(InsertDBReview);
-                statement.setString(1, comment);
-                statement.setInt(2, CoScore);
-
-                int rowsInserted = statement.executeUpdate();
-                if (rowsInserted > 0) {
-                    System.out.println("Review has been inserted");
-                } else {
-                    System.out.println("Review has not been inserted");
-                }
-            } else {
-                System.out.println("Connection not established");
-            }
-        } catch (SQLException e) {
-            System.out.println("Damn");
-            throw new RuntimeException(e);
-        }
+    public void setStudentID(String userID) {
+        this.studentID = userID;
     }
-
-
 }

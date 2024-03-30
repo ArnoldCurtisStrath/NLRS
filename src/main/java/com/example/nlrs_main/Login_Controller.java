@@ -37,6 +37,8 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
 
     private Runnable onLoginHandler;
 
+    private String studentID;
+
     //I have commented out this part. So it doesn't give any of us problems.
     //But it works. so don't worry about the icons and don't change anything on it.
     /**@Override
@@ -57,8 +59,6 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
     private void loginButton(ActionEvent event) {
         String userID = userIDtf.getText();
         String password = passwordtf.getText();
-        setStuID(userIDtf.getText());
-
 
         try {
             if (!userID.isBlank() && !password.isBlank()) {
@@ -69,6 +69,11 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
                         setUserID(userID);
                         if (onLoginHandler != null) {
                             onLoginHandler.run();
+                        }
+                        if (accountTypeChoiceBox.getValue().equalsIgnoreCase("Student")) {
+                            Users user = new Users();
+                            user.setStudentID(userID); // Set the studentID field in the Users class
+                            setStudentID(user.getStudentID()); // Set the studentID in the Login_Controller class
                         }
                     } else {
                         messageLabel.setText("Incorrect credentials. Please try again.");
@@ -81,8 +86,19 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
             }
         } catch (NumberFormatException e) {
             messageLabel.setText("Invalid userID. Please enter a valid integer.");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+    public void setStuID(String userID) {
+        Users user = new Users();
+        user.setStudentID(userID);
+    }
+
+
+
+
 
     public boolean getUsernames(String userID) throws Exception
     {
@@ -128,5 +144,14 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
 
     public void setOnLoginHandler(Runnable handler) {
         this.onLoginHandler = handler;
+    }
+
+
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
+    }
+
+    public String getStudentID() {
+        return studentID;
     }
 }

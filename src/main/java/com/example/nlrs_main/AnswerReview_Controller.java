@@ -4,6 +4,7 @@ import com.example.nlrs_main.DatabaseConnector.ReadWriteDB;
 import com.example.nlrs_main.NLS.NaturalLanguageAnalyzer;
 import com.example.nlrs_main.Users;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
@@ -14,17 +15,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.fxml.FXMLLoader;
 
 public class AnswerReview_Controller extends Users {
     @FXML
     private VBox questionReviewContainer;
 
     private List<QuestionReviewContainer> questionReviewContainers;
+    public String selectedUnitName;
 
-    public void initialize() {
+    private String studentID;
+
+    public void initialize(String unitName) {
+        this.selectedUnitName = unitName;
+        // Remove the code related to setting studentID
         questionReviewContainers = new ArrayList<>();
         setQuestionsFromDB();
     }
+
 
     @FXML
     private void submitReviews() {
@@ -33,7 +41,7 @@ public class AnswerReview_Controller extends Users {
             System.out.println("Review submitted for question: " + container.getQuestion() + "\nReview: " + review);
             int reviewScore = analyzeSentiment(review);
             System.out.println("This is the rating for the review of the question: " + reviewScore);
-            storeFeedback(review, reviewScore);
+            storeFeedback(container.getQuestion(), review, reviewScore,studentID);
         }
     }
 
@@ -42,14 +50,16 @@ public class AnswerReview_Controller extends Users {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
             if (dbConnect != null) {
-                String query = "SELECT question FROM formcontents WHERE unit = 'Data Structures'";
+                String query = "SELECT question, category FROM formcontents WHERE unit = ?";
                 PreparedStatement statement = dbConnect.prepareStatement(query);
+                statement.setString(1, selectedUnitName);
 
                 ResultSet resultSet = statement.executeQuery();
                 int questionNumber = 1;
                 while (resultSet.next()) {
                     String question = resultSet.getString("question");
-                    QuestionReviewContainer container = new QuestionReviewContainer(questionNumber, question);
+                    int categoryID = resultSet.getInt("category");
+                    QuestionReviewContainer container = new QuestionReviewContainer(questionNumber, question, categoryID);
                     questionReviewContainers.add(container);
                     questionReviewContainer.getChildren().add(container.getRoot());
                     questionNumber++;
@@ -66,21 +76,22 @@ public class AnswerReview_Controller extends Users {
         }
     }
 
-    private void storeFeedback(String comment, int score) {
+     private void storeFeedback(String question, String comment, int score, String studentID)  {
         try {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
             if (dbConnect != null) {
-                int categoryID = getCategoryID(12);
+                String lecturerID = getLecturerIDForUnit(selectedUnitName);
 
-                String query = "INSERT INTO feedback (userID, comment, CaID, stdID, CoScore) " +
-                        "VALUES (?, ?, ?, ?, ?)";
+                String query = "INSERT INTO feedback (userID, comment, CaID, stdID, CoScore, unit) " +
+                        "VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement statement = dbConnect.prepareStatement(query);
-                statement.setString(1, getLecturerIDForDataStructures());
+                statement.setString(1, lecturerID);
                 statement.setString(2, comment);
-                statement.setInt(3, categoryID);
-                statement.setString(4, getStudentID());
+                statement.setInt(3, getCategoryID(question));
+                statement.setString(4, studentID); // Use studentID field
                 statement.setInt(5, score);
+                statement.setString(6, selectedUnitName);
 
                 int rowsInserted = statement.executeUpdate();
                 if (rowsInserted > 0) {
@@ -104,50 +115,28 @@ public class AnswerReview_Controller extends Users {
         return nls.analyzeSentiment(text);
     }
 
-    private String getStudentID() {
-        return getStuID();
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
     }
 
-    private int getCategoryID(int formID) {
-        int categoryID = 0;
-        try {
-            ReadWriteDB con = new ReadWriteDB();
-            Connection dbConnect = con.getConnection();
-            if (dbConnect != null) {
-                String query = "SELECT category FROM formcontents WHERE formID = ?";
-                PreparedStatement statement = dbConnect.prepareStatement(query);
-                statement.setInt(1, formID);
 
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()) {
-                    categoryID = resultSet.getInt("category");
-                    if (!resultSet.isLast()) {
-                        resultSet.next();
-                    } else {
-                        break;
-                    }
-                }
-                resultSet.close();
-                statement.close();
-                dbConnect.close();
-            } else {
-                System.out.println("Database Connection Failed");
+    private int getCategoryID(String question) {
+        for (QuestionReviewContainer container : questionReviewContainers) {
+            if (container.getQuestion().equals(question)) {
+                return container.getCategoryID();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error occurred: " + e.getMessage());
         }
-        return categoryID;
+        return 0;
     }
 
-
-    private String getLecturerIDForDataStructures() {
+    private String getLecturerIDForUnit(String unitName) {
         try {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
             if (dbConnect != null) {
-                String query = "SELECT userID FROM units WHERE unitName = 'Data Structures'";
+                String query = "SELECT userID FROM units WHERE unitName = ?";
                 PreparedStatement statement = dbConnect.prepareStatement(query);
+                statement.setString(1, unitName);
 
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
@@ -167,15 +156,17 @@ public class AnswerReview_Controller extends Users {
             e.printStackTrace();
             System.out.println("Error occurred: " + e.getMessage());
         }
-        return " ";
+        return "";
     }
 
     private static class QuestionReviewContainer {
         private Label questionLabel;
         private TextArea reviewTextArea;
         private VBox root;
+        private int categoryID;
 
-        public QuestionReviewContainer(int questionNumber, String question) {
+        public QuestionReviewContainer(int questionNumber, String question, int categoryID) {
+            this.categoryID = categoryID;
             questionLabel = new Label("Question " + questionNumber + ": " + question);
             reviewTextArea = new TextArea();
             reviewTextArea.setPromptText("Enter your review here");
@@ -194,5 +185,12 @@ public class AnswerReview_Controller extends Users {
         public VBox getRoot() {
             return root;
         }
+
+        public int getCategoryID() {
+            return categoryID;
+        }
+
+
+
     }
 }

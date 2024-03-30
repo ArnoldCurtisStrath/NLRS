@@ -106,31 +106,32 @@ public class CreateReview_Controller {
             Connection dbConnect = con.getConnection();
 
             if (dbConnect != null) {
-                String reviewTitle = this.reviewTitle.getText();
+                String reviewTitleText = this.reviewTitle.getText();
                 String lecturerName = CRLec.getValue();
 
-
+                // Fetch Lecturer UserID based on Name
                 String getUserIdQuery = "SELECT userID FROM users WHERE CONCAT(firstName, ' ', lastName) = ?";
                 PreparedStatement getUserIdStatement = dbConnect.prepareStatement(getUserIdQuery);
                 getUserIdStatement.setString(1, lecturerName);
                 ResultSet userIdResultSet = getUserIdStatement.executeQuery();
 
-
                 if (userIdResultSet.next()) {
                     String lecturerUserId = userIdResultSet.getString("userID");
 
-                    String insertDbFields = "INSERT INTO form (formName,lec) VALUES (?, ?)";
+                    // Insert review details into 'form'
+                    String insertFormQuery = "INSERT INTO form (formName, lec) VALUES (?, ?)";
+                    PreparedStatement insertFormStmt = dbConnect.prepareStatement(insertFormQuery, Statement.RETURN_GENERATED_KEYS);
+                    insertFormStmt.setString(1, reviewTitleText);
+                    insertFormStmt.setString(2, lecturerUserId);
 
-                    PreparedStatement statement = dbConnect.prepareStatement(insertDbFields, Statement.RETURN_GENERATED_KEYS);
-                    statement.setString(1, reviewTitle);
-                    statement.setString(2, lecturerUserId);
-
-                    int rowsInserted = statement.executeUpdate();
+                    int rowsInserted = insertFormStmt.executeUpdate();
                     if (rowsInserted > 0) {
-                        ResultSet generatedKeys = statement.getGeneratedKeys();
+                        ResultSet generatedKeys = insertFormStmt.getGeneratedKeys();
                         if (generatedKeys.next()) {
                             int formId = generatedKeys.getInt(1);
-                            saveQuestions(formId, con.getUserID());
+
+                            // Call saveQuestions with lecturerUserId
+                            saveQuestions(formId, lecturerUserId);
                         }
                     } else {
                         registrationMessageFailureLabel.setText("Failed to create the review. Please try again.");
@@ -148,7 +149,7 @@ public class CreateReview_Controller {
     }
 
 
-    private void saveQuestions(int formId, String adminId) {
+    private void saveQuestions(int formId, String lecturerUserId) {
         try {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
@@ -160,18 +161,15 @@ public class CreateReview_Controller {
                     String questionText = parts[1];
                     String unit = CRUnit.getValue();
 
+                    String insertQuestionQuery = "INSERT INTO formcontents (question, category, formID, unit, lec) VALUES (?, ?, ?, ?, ?)";
+                    PreparedStatement insertQuestionStmt = dbConnect.prepareStatement(insertQuestionQuery);
+                    insertQuestionStmt.setString(1, questionText);
+                    insertQuestionStmt.setInt(2, getCategoryId(category));
+                    insertQuestionStmt.setInt(3, formId);
+                    insertQuestionStmt.setString(4, unit);
+                    insertQuestionStmt.setString(5, lecturerUserId); // Use lecturerUserId correctly
 
-                    String insertDbFields = "INSERT INTO formcontents ( question, category, formID , unit,lec )" +
-                            " VALUES (?, ?, ?, ?,?)";
-
-                    PreparedStatement statement = dbConnect.prepareStatement(insertDbFields);
-                    statement.setString(1, questionText);
-                    statement.setInt(2, getCategoryId(category));
-                    statement.setInt(3, formId);
-                    statement.setString(4,unit);
-                    statement.setString(5,adminId);
-
-                    statement.executeUpdate();
+                    insertQuestionStmt.executeUpdate();
                 }
                 registrationSuccessMessageLabel.setText("Successfully created a review!");
             } else {

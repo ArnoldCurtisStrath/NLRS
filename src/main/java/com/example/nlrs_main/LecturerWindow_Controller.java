@@ -29,6 +29,8 @@ public class LecturerWindow_Controller implements Initializable {
     @FXML
     private Button unit4;
 
+    private String lecturerID;
+
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUnitFromDB();
@@ -74,6 +76,14 @@ public class LecturerWindow_Controller implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PerformanceReport.fxml"));
             Parent root1 = fxmlLoader.load();
+            PerformanceReport_Controller controller = fxmlLoader.getController();
+
+            // Retrieve the lecturer ID and unit name from the clicked button
+            Button clickedButton = (Button) event.getSource();
+            String unitName = clickedButton.getText();
+            String lecturerID = getLecturerID(); // Implement this method to retrieve the lecturer ID
+
+            controller.initialize(lecturerID, unitName);
 
             // Create a new stage
             Stage answerReviewsStage = new Stage();
@@ -85,6 +95,43 @@ public class LecturerWindow_Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
+    private String getLecturerID() {
+        String lecturerID = null;
+        try {
+            ReadWriteDB con = new ReadWriteDB();
+            Connection dbConnect = con.getConnection();
+            if (dbConnect != null) {
+                String query = "SELECT userID FROM users WHERE userType = 'Lecturer'";
+                PreparedStatement statement = dbConnect.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery();
+
+                // Assuming you want to retrieve the first lecturer's ID
+                if (resultSet.next()) {
+                    lecturerID = resultSet.getString("userID");
+                }
+
+                resultSet.close();
+                statement.close();
+                dbConnect.close();
+            } else {
+                System.out.println("Database Connection Failed");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+
+        // If lecturerID is still null, return a default value
+        return lecturerID != null ? lecturerID : "L001";
+    }
+
+
+    public void setLecturerID(String lecturerID) {
+        this.lecturerID = lecturerID;
+    }
+
+
 
 
 

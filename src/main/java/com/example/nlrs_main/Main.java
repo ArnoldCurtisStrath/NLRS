@@ -51,10 +51,10 @@ public class Main extends Application {
                             loadAdminScene();
                             break;
                         case "Student":
-                            loadStudentScene();
+                            loadStudentScene(userID);
                             break;
                         case "Lecturer":
-                            // Handle Lecturer case
+                            loadLecturerScene(userID);
                             break;
                         default:
                             System.out.println("Invalid account type retrieved from the database");
@@ -69,6 +69,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
     private void loadAdminScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Admin_Page.fxml"));
@@ -80,14 +81,36 @@ public class Main extends Application {
         }
     }
 
-    private void loadStudentScene() {
+    private void loadStudentScene(String userID) {
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Students_fPage.fxml"));
             Parent root = loader.load();
+            StudentsF_Controller controller = loader.getController();
+            controller.setStudentID(userID);
             primaryStage.setScene(new Scene(root, 800, 600));
             primaryStage.setTitle("Student Dashboard");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private void loadLecturerScene(String lecturerID) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("LecturerWindow.fxml"));
+            Parent root = loader.load();
+            LecturerWindow_Controller controller = loader.getController();
+            controller.setLecturerID(lecturerID); // Assuming you have a setLecturerID method in LecturerWindow_Controller
+
+            primaryStage.setScene(new Scene(root, 800, 600));
+            primaryStage.setTitle("Lecturer Dashboard");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 }

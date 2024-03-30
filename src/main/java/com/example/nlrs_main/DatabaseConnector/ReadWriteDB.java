@@ -10,7 +10,7 @@ public class ReadWriteDB extends Users {
     public Connection getConnection() {
         String dbName = "nlrs";
         String user = "root";
-        String password = "alvinmajawa2020*";
+        String password = "1234";
         String url = "jdbc:mysql://localhost/" + dbName;
 
         try {
