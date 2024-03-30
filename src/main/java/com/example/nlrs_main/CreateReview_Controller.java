@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+
 public class CreateReview_Controller {
 
     public Label registrationSuccessMessageLabel;
@@ -44,9 +45,6 @@ public class CreateReview_Controller {
     private ObservableList<String> lecturerList = FXCollections.observableArrayList();
     @FXML
     private ObservableList<String> unitList = FXCollections.observableArrayList();
-
-
-
 
     @FXML
     private void initialize() {
@@ -101,9 +99,6 @@ public class CreateReview_Controller {
             }
         }
     }
-
-
-
 
     public void saveFormDetails() {
         try {
@@ -166,14 +161,15 @@ public class CreateReview_Controller {
                     String unit = CRUnit.getValue();
 
 
-                    String insertDbFields = "INSERT INTO formcontents ( question, category, formID , unit,lec ) VALUES (?, ?, ?, ?,?)";
+                    String insertDbFields = "INSERT INTO formcontents ( question, category, formID , unit,lec )" +
+                            " VALUES (?, ?, ?, ?,?)";
 
                     PreparedStatement statement = dbConnect.prepareStatement(insertDbFields);
                     statement.setString(1, questionText);
                     statement.setInt(2, getCategoryId(category));
                     statement.setInt(3, formId);
                     statement.setString(4,unit);
-                   statement.setString(5,adminId);
+                    statement.setString(5,adminId);
 
                     statement.executeUpdate();
                 }
@@ -264,15 +260,10 @@ public class CreateReview_Controller {
             e.printStackTrace();
         }
     }
-
     @FXML
     private void handleSubmitButtonAction(ActionEvent event) {
         submitCreatedReviewButton.setDisable(true);
         saveFormDetails();
         submitCreatedReviewButton.setDisable(false);
     }
-
-
-
-
 }

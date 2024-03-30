@@ -19,16 +19,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-
-public class StudentsF_Controller implements Initializable {
-
+public class LecturerWindow_Controller implements Initializable {
     @FXML
     private Button unit1;
+    @FXML
+    private Button unit2;
+    @FXML
+    private Button unit3;
+    @FXML
+    private Button unit4;
 
-    @Override
+    @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUnitFromDB();
     }
+
     public void setUnitFromDB() {
         try {
             ReadWriteDB con = new ReadWriteDB();
@@ -41,30 +46,39 @@ public class StudentsF_Controller implements Initializable {
                 if (resultSet.next()) {
                     String unitName = resultSet.getString("unitName");
                     unit1.setText(unitName);
+                    unit2.setText(unitName);
+                    unit3.setText(unitName);
+                    unit4.setText(unitName);
                 } else {
                     unit1.setText("Unit Name");
+                    unit2.setText("Unit Name");
+                    unit3.setText("Unit Name");
+                    unit4.setText("Unit Name");
                 }
                 resultSet.close();
                 statement.close();
                 dbConnect.close();
             } else {
+                // Handle case when connection is null
                 System.out.println("Database Connection Failed");
             }
         } catch (SQLException e) {
+            // Handle SQL exception
             e.printStackTrace();
             System.out.println("Error occurred: " + e.getMessage());
         }
     }
+
     @FXML
-    public void loadAnswerReviewsScene(ActionEvent event) {
+    public void loadLecturerPerfomanceReport(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AnswerReview.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PerformanceReport.fxml"));
             Parent root1 = fxmlLoader.load();
 
             // Create a new stage
             Stage answerReviewsStage = new Stage();
-            answerReviewsStage.setTitle("Answer Review");
-            answerReviewsStage.initModality(Modality.APPLICATION_MODAL); // This makes the new stage modal
+            answerReviewsStage.setTitle("Lecturer Performance Report");
+            answerReviewsStage.initModality(Modality.APPLICATION_MODAL);
             answerReviewsStage.setScene(new Scene(root1));
             answerReviewsStage.showAndWait();
         } catch (IOException e) {
@@ -72,32 +86,6 @@ public class StudentsF_Controller implements Initializable {
         }
     }
 
-    public void inputReview(String comment, int CoScore) {
-        try {
-            ReadWriteDB con = new ReadWriteDB();
-            Connection dbconnect = con.getConnection();
-
-            if (dbconnect != null) {
-                String InsertDBReview = "INSERT INTO feedBack (Comment, CoScore) VALUES (?,?)";
-
-                PreparedStatement statement = dbconnect.prepareStatement(InsertDBReview);
-                statement.setString(1, comment);
-                statement.setInt(2, CoScore);
-
-                int rowsInserted = statement.executeUpdate();
-                if (rowsInserted > 0) {
-                    System.out.println("Review has been inserted");
-                } else {
-                    System.out.println("Review has not been inserted");
-                }
-            } else {
-                System.out.println("Connection not established");
-            }
-        } catch (SQLException e) {
-            System.out.println("Damn");
-            throw new RuntimeException(e);
-        }
-    }
 
 
 }

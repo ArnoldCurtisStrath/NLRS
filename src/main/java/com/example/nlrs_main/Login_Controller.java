@@ -51,11 +51,14 @@ public class Login_Controller extends ReadWriteDB /**implements Initializable**/
         Platform.exit();
     }
 
+
+
     @FXML
     private void loginButton(ActionEvent event) {
         String userID = userIDtf.getText();
         String password = passwordtf.getText();
-        setUserID(userID);
+        setStuID(userIDtf.getText());
+
 
         try {
             if (!userID.isBlank() && !password.isBlank()) {
