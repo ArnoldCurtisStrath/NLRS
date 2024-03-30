@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="847.0" prefWidth="910.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.nlrs_main.PerformanceReport_Controller">
+   <children>
+      <AnchorPane prefHeight="87.0" prefWidth="913.0" style="-fx-background-color: #263F73;">
+         <children>
+            <Label alignment="CENTER" layoutX="187.0" layoutY="28.0" prefHeight="30.0" prefWidth="276.0" text="Lecturer Perfromance Report" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+            <ImageView fx:id="adminPageIcon" fitHeight="60.0" fitWidth="70.0" layoutX="68.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../java/com/example/nlrs_main/ImagesAndIcons/AdminHomeIcon.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="logoutButton2" layoutX="763.0" layoutY="26.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="70.0" text="Log-Out" textFill="#263f73" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="533.0" layoutY="87.0" prefHeight="270.0" prefWidth="380.0" style="-fx-background-color: white;">
+         <children>
+            <Label prefHeight="30.0" prefWidth="380.0" style="-fx-underline: true;" text="Breif Average Performance Report Analysis:" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="500.0" prefHeight="347.0" prefWidth="534.0" style="-fx-background-color: white;">
+         <children>
+            <Label alignment="BOTTOM_LEFT" layoutX="1.0" layoutY="-1.0" mouseTransparent="true" prefHeight="30.0" prefWidth="380.0" style="-fx-underline: true;" text="Lecturer Weaknesses" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.6842105388641357" green="0.41306042671203613" blue="0.5802696347236633" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="533.0" layoutY="358.0" prefHeight="314.0" prefWidth="380.0" style="-fx-background-color: white;">
+         <children>
+            <Label alignment="BOTTOM_LEFT" layoutY="1.0" mouseTransparent="true" prefHeight="30.0" prefWidth="380.0" style="-fx-underline: true;" text="Lecturer Strengths" textAlignment="CENTER" textFill="#07ba1ce4">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <effect>
+                  <Glow>
+                     <input>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow>
+                                 <color>
+                                    <Color red="0.5263158082962036" blue="0.45614033937454224" />
+                                 </color>
+                              </Shadow>
+                           </bumpInput>
+                        </Lighting>
+                     </input>
+                  </Glow>
+               </effect>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="533.0" layoutY="672.0" prefHeight="175.0" prefWidth="380.0" style="-fx-background-color: white;">
+         <children>
+            <Button layoutX="10.0" layoutY="139.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Submit Comment" />
+            <Label layoutX="10.0" layoutY="7.0" prefHeight="18.0" prefWidth="186.0" text="Comment on Performance Report:" />
+            <TextArea layoutX="10.0" layoutY="25.0" prefHeight="114.0" prefWidth="357.0" />
+         </children></AnchorPane>
+      <AnchorPane fx:id="chartPane" layoutX="-1.0" layoutY="86.0" prefHeight="314.0" prefWidth="534.0">
+         <children>
+            <PieChart layoutX="1.0" layoutY="1.0" prefHeight="314.0" prefWidth="534.0" style="-fx-background-color: white;" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

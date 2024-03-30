@@ -19,9 +19,11 @@ public class Users {
     boolean userStatus;
     Date realtimeDate;
 
+    String stuID;
 
 
-    public void setUsers(String newUserID,String newUserType,String newUserName, String newPassword,String newFirstName, String newLastName,String newDateOfBirth,
+
+    public void setUser (String newUserID,String newUserType,String newUserName, String newPassword,String newFirstName, String newLastName,String newDateOfBirth,
                          String newEmail, int newContact, String newCountry, String newCourse, boolean newUserStatus, Date newRealTimeDate){
         this.userName = newUserName;
         this.firstName = newFirstName;
@@ -37,6 +39,14 @@ public class Users {
         this.userStatus = newUserStatus;
         this.realtimeDate = newRealTimeDate;
 
+    }
+
+    public void setStuID(String stuID) {
+        this.stuID = stuID;
+    }
+
+    public String getStuID() {
+        return stuID;
     }
 
     public void setRealtimeDate(Date realtimeDate) {
