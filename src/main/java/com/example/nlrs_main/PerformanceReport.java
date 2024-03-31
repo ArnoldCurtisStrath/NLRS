@@ -65,7 +65,7 @@ public class PerformanceReport {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
             if (dbConnect != null) {
-                String query = "INSERT INTO categoriesscores (avgCatScore, catID, unit, lec) VALUES (?, ?, ?, ?)";
+                String query = "INSERT INTO categoryscores (avgCatScore, catID, unitName, lec) VALUES (?, ?, ?, ?)";
                 PreparedStatement statement = dbConnect.prepareStatement(query);
 
                 for (Map.Entry<Integer, Double> entry : categoryScores.entrySet()) {
