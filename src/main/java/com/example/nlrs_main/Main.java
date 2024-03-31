@@ -30,7 +30,7 @@ public class Main extends Application {
 
         //The commented out line of code is what hides the minimize, close and maximize buttons
         //I commented it, so you can be able to use them if you want.
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(loginScene);
         primaryStage.show();
@@ -47,6 +47,7 @@ public class Main extends Application {
                 String selectedAccountType = loginController.accountTypeChoiceBox.getValue();
                 if (selectedAccountType.equalsIgnoreCase(accountType)) {
                     switch (accountType) {
+                        // Existing cases
                         case "Admin":
                             loadAdminScene();
                             break;
@@ -54,10 +55,9 @@ public class Main extends Application {
                             loadStudentScene(userID);
                             break;
                         case "Lecturer":
-                            loadLecturerScene(userID);
+                            loadLecturerScene(userID); // Pass userID to loadLecturerScene
                             break;
-                        default:
-                            System.out.println("Invalid account type retrieved from the database");
+                        // Existing cases
                     }
                 } else {
                     System.out.println("Invalid account type selected");
@@ -69,6 +69,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
 
     private void loadAdminScene() {
         try {
@@ -96,21 +97,18 @@ public class Main extends Application {
         }
     }
 
-    private void loadLecturerScene(String lecturerID) {
+    private void loadLecturerScene(String userID) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LecturerWindow.fxml"));
             Parent root = loader.load();
             LecturerWindow_Controller controller = loader.getController();
-            controller.setLecturerID(lecturerID); // Assuming you have a setLecturerID method in LecturerWindow_Controller
-
+            controller.setLecturerID(userID); // Set the lecturer's ID
+            controller.setUnitFromDB(userID); // Retrieve and set unit names
             primaryStage.setScene(new Scene(root, 800, 600));
             primaryStage.setTitle("Lecturer Dashboard");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-
 
 }

@@ -41,10 +41,9 @@ public class AnswerReview_Controller extends Users {
             System.out.println("Review submitted for question: " + container.getQuestion() + "\nReview: " + review);
             int reviewScore = analyzeSentiment(review);
             System.out.println("This is the rating for the review of the question: " + reviewScore);
-            storeFeedback(container.getQuestion(), review, reviewScore,studentID);
+            storeFeedback(container.getQuestion(), review, reviewScore, studentID);
         }
     }
-
     private void setQuestionsFromDB() {
         try {
             ReadWriteDB con = new ReadWriteDB();
@@ -76,7 +75,7 @@ public class AnswerReview_Controller extends Users {
         }
     }
 
-     private void storeFeedback(String question, String comment, int score, String studentID)  {
+    private void storeFeedback(String question, String comment, int score, String studentID) {
         try {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
@@ -89,7 +88,7 @@ public class AnswerReview_Controller extends Users {
                 statement.setString(1, lecturerID);
                 statement.setString(2, comment);
                 statement.setInt(3, getCategoryID(question));
-                statement.setString(4, studentID); // Use studentID field
+                statement.setString(4, studentID);
                 statement.setInt(5, score);
                 statement.setString(6, selectedUnitName);
 
@@ -100,7 +99,6 @@ public class AnswerReview_Controller extends Users {
                     System.out.println("Failed to store feedback");
                 }
                 statement.close();
-                dbConnect.close();
             } else {
                 System.out.println("Database Connection Failed");
             }
