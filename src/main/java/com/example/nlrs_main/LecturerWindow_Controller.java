@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class LecturerWindow_Controller implements Initializable {
+public class LecturerWindow_Controller {
     @FXML
     private Button unit1;
     @FXML
@@ -31,32 +31,31 @@ public class LecturerWindow_Controller implements Initializable {
 
     private String lecturerID;
 
-    @FXML
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setUnitFromDB();
-    }
-
-    public void setUnitFromDB() {
+    public void setUnitFromDB(String lecturerID) {
         try {
             ReadWriteDB con = new ReadWriteDB();
             Connection dbConnect = con.getConnection();
             if (dbConnect != null) {
-                String query = "SELECT unitName FROM units WHERE unitID = 1";
+                String query = "SELECT unitName FROM units WHERE userID = ?";
                 PreparedStatement statement = dbConnect.prepareStatement(query);
-
+                statement.setString(1, lecturerID);
                 ResultSet resultSet = statement.executeQuery();
-                if (resultSet.next()) {
+
+                // Clear previous text on buttons
+                unit1.setText("Unit Name");
+
+                // Loop through the result set and set unit names on buttons
+                int i = 1;
+                while (resultSet.next() && i <= 4) {
                     String unitName = resultSet.getString("unitName");
-                    unit1.setText(unitName);
-                    unit2.setText(unitName);
-                    unit3.setText(unitName);
-                    unit4.setText(unitName);
-                } else {
-                    unit1.setText("Unit Name");
-                    unit2.setText("Unit Name");
-                    unit3.setText("Unit Name");
-                    unit4.setText("Unit Name");
+                    switch (i) {
+                        case 1:
+                            unit1.setText(unitName);
+                        break;
+                    }
+                    i++;
                 }
+
                 resultSet.close();
                 statement.close();
                 dbConnect.close();
@@ -72,25 +71,76 @@ public class LecturerWindow_Controller implements Initializable {
     }
 
     @FXML
+    public void changeAllLecturerDetails(ActionEvent event) {
+        // Retrieve the unit name from the clicked button
+        String unitName = ((Button) event.getSource()).getText();
+
+        // Pass lecturer ID and unit name to PerformanceReport_Controller
+        openPerformanceReport(lecturerID, unitName);
+    }
+    @FXML
+    public void changeLecturerContactDetails(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LecturerContactDetailsUpdate.fxml"));
+            Parent root1 = fxmlLoader.load();
+            updatePassword_Controller controller = fxmlLoader.getController();
+
+            // Pass data to PerformanceReport_Controller
+            controller.initialize(lecturerID);
+
+            // Create a new stage
+            Stage performanceReportStage = new Stage();
+            performanceReportStage.setTitle("Update Password Page");
+            performanceReportStage.initModality(Modality.APPLICATION_MODAL);
+            performanceReportStage.setScene(new Scene(root1));
+            performanceReportStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void changeLecturePassword(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LecturerPasswordUpdate.fxml"));
+            Parent root1 = fxmlLoader.load();
+            updatePassword_Controller controller = fxmlLoader.getController();
+
+            // Pass data to PerformanceReport_Controller
+            controller.initialize(lecturerID);
+
+            // Create a new stage
+            Stage performanceReportStage = new Stage();
+            performanceReportStage.setTitle("Update Password Page");
+            performanceReportStage.initModality(Modality.APPLICATION_MODAL);
+            performanceReportStage.setScene(new Scene(root1));
+            performanceReportStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
     public void loadLecturerPerfomanceReport(ActionEvent event) {
+        // Retrieve the unit name from the clicked button
+        String unitName = ((Button) event.getSource()).getText();
+
+        // Pass lecturer ID and unit name to PerformanceReport_Controller
+        openPerformanceReport(lecturerID, unitName);
+    }
+    private void openPerformanceReport(String lecturerID, String unitName) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PerformanceReport.fxml"));
             Parent root1 = fxmlLoader.load();
             PerformanceReport_Controller controller = fxmlLoader.getController();
 
-            // Retrieve the lecturer ID and unit name from the clicked button
-            Button clickedButton = (Button) event.getSource();
-            String unitName = clickedButton.getText();
-            String lecturerID = getLecturerID(); // Implement this method to retrieve the lecturer ID
-
+            // Pass data to PerformanceReport_Controller
             controller.initialize(lecturerID, unitName);
 
             // Create a new stage
-            Stage answerReviewsStage = new Stage();
-            answerReviewsStage.setTitle("Lecturer Performance Report");
-            answerReviewsStage.initModality(Modality.APPLICATION_MODAL);
-            answerReviewsStage.setScene(new Scene(root1));
-            answerReviewsStage.showAndWait();
+            Stage performanceReportStage = new Stage();
+            performanceReportStage.setTitle("Lecturer Performance Report");
+            performanceReportStage.initModality(Modality.APPLICATION_MODAL);
+            performanceReportStage.setScene(new Scene(root1));
+            performanceReportStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,7 +175,6 @@ public class LecturerWindow_Controller implements Initializable {
         // If lecturerID is still null, return a default value
         return lecturerID != null ? lecturerID : "L001";
     }
-
 
     public void setLecturerID(String lecturerID) {
         this.lecturerID = lecturerID;

@@ -120,37 +120,47 @@ public class PerformanceReport {
             int categoryID = entry.getKey();
             double avgScore = entry.getValue();
             String categoryName = getCategoryName(categoryID);
-            pieChartData.add(new PieChart.Data(categoryName, avgScore));
+            PieChart.Data data = new PieChart.Data(categoryName, avgScore);
+            pieChartData.add(data);
         }
         return pieChartData;
     }
-
     public ObservableList<String> getStrengths() {
         ObservableList<String> strengths = FXCollections.observableArrayList();
         for (Map.Entry<Integer, Double> entry : categoryScores.entrySet()) {
             int categoryID = entry.getKey();
             double avgScore = entry.getValue();
+            String categoryName = getCategoryName(categoryID);
             if (avgScore > 5.0) {
-                String categoryName = getCategoryName(categoryID);
                 strengths.add(categoryName + ": " + avgScore);
             }
         }
         return strengths;
     }
-
-    public ObservableList<String> getWeaknesses() {
+    public ObservableList<String> getNeutrals() {
         ObservableList<String> weaknesses = FXCollections.observableArrayList();
         for (Map.Entry<Integer, Double> entry : categoryScores.entrySet()) {
             int categoryID = entry.getKey();
             double avgScore = entry.getValue();
-            if (avgScore < 5.0) {
-                String categoryName = getCategoryName(categoryID);
+            String categoryName = getCategoryName(categoryID);
+            if (avgScore == 5.0) {
                 weaknesses.add(categoryName + ": " + avgScore);
             }
         }
         return weaknesses;
     }
-
+    public ObservableList<String> getWeaknesses() {
+        ObservableList<String> weaknesses = FXCollections.observableArrayList();
+        for (Map.Entry<Integer, Double> entry : categoryScores.entrySet()) {
+            int categoryID = entry.getKey();
+            double avgScore = entry.getValue();
+            String categoryName = getCategoryName(categoryID);
+            if (avgScore < 5.0) {
+                weaknesses.add(categoryName + ": " + avgScore);
+            }
+        }
+        return weaknesses;
+    }
     private String getCategoryName(int categoryID) {
         switch (categoryID) {
             case 1:
@@ -187,7 +197,6 @@ public class PerformanceReport {
                 return "Unknown Category";
         }
     }
-
     public double getTotalScore() {
         return totalScore;
     }
